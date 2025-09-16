@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Surat Cinta dari Abang</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(270deg, #ffd6e8, #ffe0f0, #ffc1e3, #ffb6d9, #ffd6f5);
+      background-size: 400% 400%;
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      animation: gradientShift 15s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .aurora {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 20% 20%, rgba(255,182,219,0.5), transparent 60%),
+                  radial-gradient(circle at 80% 30%, rgba(255,200,250,0.4), transparent 60%),
+                  radial-gradient(circle at 50% 80%, rgba(255,150,200,0.5), transparent 60%);
+      filter: blur(80px);
+      animation: auroraMove 20s infinite alternate ease-in-out;
+      z-index: 0;
+    }
+
+    @keyframes auroraMove {
+      from { transform: translate(0,0) rotate(0deg); }
+      to { transform: translate(50px,50px) rotate(20deg); }
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      width: 360px; /* lebih besar */
+      height: auto; /* otomatis menyesuaikan isi */
+      perspective: 1000px;
+      animation: popUp 1s ease forwards;
+      z-index: 2;
+    }
+
+    @keyframes popUp {
+      0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0); opacity: 1; }
+    }
+
+    .envelope {
+      width: 100%;
+      background: #ff80ab;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(255,64,129,0.6);
+      transition: transform 0.6s ease;
+      transform-style: preserve-3d;
+      position: relative;
+      animation: shimmer 3s infinite alternate;
+      padding-bottom: 20px;
+    }
+
+    @keyframes shimmer {
+      0% { box-shadow: 0 0 20px #ff80ab, 0 0 50px #fff5; }
+      100% { box-shadow: 0 0 40px #ff4081, 0 0 80px #fff8; }
+    }
+
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background: #ff4081;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top;
+      transition: transform 0.6s ease;
+      z-index: 2;
+    }
+
+    .letter {
+      margin-top: 120px;
+      width: 320px;
+      background: linear-gradient(135deg, #fff, #ffe0f0);
+      border-radius: 10px;
+      padding: 25px 20px;
+      box-sizing: border-box;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.8s ease;
+      font-size: 1.05em; /* font lebih besar */
+      line-height: 1.8; /* spasi antar baris lebih lega */
+      color: #333;
+      box-shadow: 0 0 40px rgba(255,64,129,0.5);
+      z-index: 1;
+      max-height: 500px; /* cukup tinggi untuk teks panjang */
+    }
+
+    .envelope.open .flap {
+      transform: rotateX(180deg);
+    }
+
+    .envelope.open .letter {
+      opacity: 1;
+      animation: zoomIn 1s ease forwards;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.9); opacity: 0; filter: blur(5px); }
+      to { transform: scale(1); opacity: 1; filter: blur(0); }
+    }
+
+    .love-button {
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 70px;
+      height: 70px;
+      font-size: 1.8em;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255,64,129,0.8);
+      animation: pulse 1.5s infinite;
+      transition: transform 0.3s ease;
+      z-index: 3;
+    }
+
+    .love-button:hover { transform: translateX(-50%) scale(1.2); }
+
+    @keyframes pulse {
+      0%,100% { transform: scale(1) translateX(-50%); }
+      50% { transform: scale(1.3) translateX(-50%); }
+    }
+
+    .particles, .flowers {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .particle, .flower {
+      position: absolute;
+      font-size: 1.5em;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    .flower { color: pink; animation: flowerFall 6s linear infinite; }
+
+    @keyframes flowerFall {
+      0% { transform: translateY(-20px) rotate(0deg) scale(1); opacity:1; }
+      100% { transform: translateY(100vh) rotate(360deg) scale(0.7); opacity:0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="aurora"></div>
+  <div class="particles" id="particles"></div>
+  <div class="flowers" id="flowers"></div>
+
+  <div class="envelope-wrapper">
+    <div class="envelope" id="envelope">
+      <div class="flap"></div>
+      <div class="letter"><div id="isiSurat"></div></div>
+      <button class="love-button" onclick="bukaSurat()">💌</button>
+    </div>
+  </div>
+
+  <audio id="bgMusic" src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" autoplay loop></audio>
+  <audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-09.mp3"></audio>
+
+  <script>
+    const isiSurat = [
+      "Hai sayangku 🌸",
+      "Abang cuma mau bilang... kamu itu segalanya buat Abang 💖",
+      "Senyumanmu, suaramu, dan kehadiranmu adalah hadiah terindah ✨",
+      "Terima kasih udah jadi bagian dari hidup Abang 🌹",
+      "Abang janji akan selalu ada, mencintai kamu sepenuh hati 💕",
+      "Dengan cinta,",
+      "Abang 💞"
+    ];
+
+    function bukaSurat() {
+      const envelope = document.getElementById('envelope');
+      const surat = document.getElementById('isiSurat');
+      const clickSound = document.getElementById('clickSound');
+
+      envelope.classList.toggle('open');
+
+      if (envelope.classList.contains('open')) {
+        clickSound.play();
+        surat.innerHTML = '';
+        let delay = 0;
+        isiSurat.forEach(line => {
+          const p = document.createElement('p');
+          p.style.opacity = 0;
+          surat.appendChild(p);
+          line.split('').forEach((char,i)=>{
+            setTimeout(()=>{
+              p.textContent += char;
+              p.style.opacity = 1;
+            }, delay + i*50);
+          });
+          delay += line.length*50 + 400;
+        });
+
+        for(let i=0;i<25;i++){
+          const aura=document.createElement('div');
+          aura.className='particle';
+          aura.innerHTML="✨";
+          aura.style.color=['#fff','#ff80ab','#ffbfd9'][Math.floor(Math.random()*3)];
+          aura.style.left=50+Math.random()*200-100+"px";
+          aura.style.top="120px";
+          aura.style.animationDuration=(Math.random()*2+2)+"s";
+          document.getElementById('particles').appendChild(aura);
+          setTimeout(()=>aura.remove(),4000);
+        }
+
+      } else {
+        surat.innerHTML='';
+      }
+    }
+
+    setInterval(()=>{
+      const particle=document.createElement('div');
+      particle.className='particle';
+      const hearts=['💖','💘','💝','💞','❤️'];
+      particle.innerText=hearts[Math.floor(Math.random()*hearts.length)];
+      particle.style.left=Math.random()*100+'vw';
+      particle.style.fontSize=(Math.random()*1.5+1)+'em';
+      particle.style.animationDuration=(Math.random()*3+3)+'s';
+      document.getElementById('particles').appendChild(particle);
+      setTimeout(()=>particle.remove(),6000);
+    },500);
+
+    setInterval(()=>{
+      const flower=document.createElement('div');
+      flower.className='flower';
+      const blossoms=['🌸','🌷','🌹','💮'];
+      flower.innerText=blossoms[Math.floor(Math.random()*blossoms.length)];
+      flower.style.left=Math.random()*100+'vw';
+      flower.style.fontSize=(Math.random()*1.2+0.8)+'em';
+      flower.style.animationDuration=(Math.random()*4+4)+'s';
+      document.getElementById('flowers').appendChild(flower);
+      setTimeout(()=>flower.remove(),8000);
+    },1500);
+  </script>
+</body>
+</html>
